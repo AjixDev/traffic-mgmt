@@ -1,0 +1,21 @@
+{
+  "name": "poc-traffic-url",
+  "version": "1.0.0",
+  "description": "A POC of a web app that generates uniqe param for url API request",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest"
+  },
+  "author": "AjixDev",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.1.0"
+  }
+}
