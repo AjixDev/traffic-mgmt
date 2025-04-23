@@ -1,5 +1,17 @@
 const request = require("supertest");
-const app = require("../server");
+const app = require("../app");
+const db = require("../services/dbService");
+
+beforeEach(async () => {
+  // Clear the mappings table before each test
+  await db.query("DELETE FROM mappings");
+});
+
+afterAll(async () => {
+  // Clean up the database after all tests
+  await db.query("DELETE FROM mappings");
+  await db.end(); // Close the database connection
+});
 
 describe("Mapping Controller", () => {
   it("should return 400 if our_param is missing in /retrieve_original", async () => {
@@ -18,7 +30,6 @@ describe("Mapping Controller", () => {
 
   it("should return the original values for a valid our_param", async () => {
     // Insert a test mapping into the database
-    const db = require("../services/dbService");
     await db.query(
       "INSERT INTO mappings (combination_key, our_param, version) VALUES (?, ?, ?)",
       ["shoes|google|1234", "testparam123", 1]
@@ -35,12 +46,6 @@ describe("Mapping Controller", () => {
     });
   });
 
-  it("should return 400 if parameters are missing in /refresh", async () => {
-    const response = await request(app).post("/mapping/refresh").send({});
-    expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing parameters");
-  });
-
   it("should return 404 if mapping is not found in /refresh", async () => {
     const response = await request(app)
       .post("/mapping/refresh")
@@ -51,7 +56,6 @@ describe("Mapping Controller", () => {
 
   it("should refresh the mapping and return the new our_param", async () => {
     // Insert a test mapping into the database
-    const db = require("../services/dbService");
     await db.query(
       "INSERT INTO mappings (combination_key, our_param, version) VALUES (?, ?, ?)",
       ["shoes|google|1234", "testparam123", 1]

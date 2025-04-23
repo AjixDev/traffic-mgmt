@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../server"); // Import the main app
+const app = require("../app"); // Import the main app
 
 describe("Traffic Controller", () => {
   it("should return 400 if parameters are missing", async () => {
